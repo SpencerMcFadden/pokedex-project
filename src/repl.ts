@@ -1,6 +1,9 @@
 import { createInterface } from 'node:readline';
 import { stdin, stdout } from 'node:process';
 
+import { getCommands } from "./commands/get_commands.js";
+
+
 export function cleanInput(input:string): string[]{
   return input
     .toLowerCase()
@@ -17,13 +20,31 @@ export function startREPL() {
   });
 
   readInterface.prompt();
-  readInterface.on('line', (input: string) => {
+  readInterface.on('line', async (input: string) => {
     const cleaned: string[] = cleanInput(input);
     if (!cleaned) {
       readInterface.prompt();
       return;
     }
-    console.log(`Your command was: ${cleaned[0]}`);
+
+    const commandName = cleaned[0];
+
+    const commands = getCommands();
+    const userCommand = commands[commandName];
+    if (!userCommand) {
+      console.log(
+        `Unknown command: "${commandName}". Type "help" for a list of commands.`,
+      );
+      readInterface.prompt();
+      return
+    }
+
+    try {
+      userCommand.callback(commands);
+    } catch (e) {
+      console.log(e);
+    }
+
     readInterface.prompt();
   });
 }
