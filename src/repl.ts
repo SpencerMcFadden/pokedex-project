@@ -18,6 +18,7 @@ export async function startREPL(state: State) {
     }
 
     const commandName = cleaned[0];
+    const args = cleaned.slice(1);
 
     const userCommand = state.commands[commandName];
     if (!userCommand) {
@@ -27,7 +28,7 @@ export async function startREPL(state: State) {
     }
 
     try {
-      await userCommand.callback(state);
+      await userCommand.callback(state, ...args);
     } catch (e) {
       console.log((e as Error).message);
     }

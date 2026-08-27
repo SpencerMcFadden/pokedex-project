@@ -43,9 +43,9 @@ export class PokeAPI {
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
       }
-      const result: Location = await response.json();
-      this.cache.add<Location>(fullURL, result);
-      return result;
+      const location: Location = await response.json();
+      this.cache.add<Location>(fullURL, location);
+      return location;
     } catch (error: unknown) {
       throw error;
     }
