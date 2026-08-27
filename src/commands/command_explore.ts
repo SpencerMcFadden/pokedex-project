@@ -2,7 +2,7 @@ import { State } from "../state.js";
 
 export async function commandExplore(state: State, ...args: string[]) {
   if (args.length !== 1) {
-    throw new Error("pleast provide a location name");
+    throw new Error("please provide a location name");
   }
 
   console.log(`Exploring ${args[0]}...`);
